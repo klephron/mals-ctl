@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"sync"
@@ -64,45 +63,48 @@ func (s *Store) store(cfg *Config) error {
 	return viper.WriteConfig()
 }
 
-func (s *Store) AddServer(name, url string) error {
+func (s *Store) AddServer(name, url string) (*Server, error) {
 	cfg, err := s.Load()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	for _, srv := range cfg.Servers {
 		if srv.Name == name {
-			return fmt.Errorf("server %q already exists", name)
+			return nil, nil
 		}
 	}
 
-	cfg.Servers = append(cfg.Servers, &Server{Name: name, Url: url})
-	return s.store(cfg)
+	server := &Server{Name: name, Url: url}
+
+	cfg.Servers = append(cfg.Servers, server)
+
+	return server, s.store(cfg)
 }
 
-func (s *Store) RemoveServer(name string) error {
+func (s *Store) RemoveServer(name string) (*Server, error) {
 	cfg, err := s.Load()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	for i, srv := range cfg.Servers {
 		if srv.Name == name {
 			cfg.Servers = append(cfg.Servers[:i], cfg.Servers[i+1:]...)
-			return s.store(cfg)
+			return srv, s.store(cfg)
 		}
 	}
-	return fmt.Errorf("server %q not found", name)
+	return nil, nil
 }
 
-func (s *Store) SetContextServer(name string) error {
+func (s *Store) SetContextServer(name string) (bool, error) {
 	if err := s.ensure(); err != nil {
-		return err
+		return false, err
 	}
 
 	cfg, err := s.Load()
 	if err != nil {
-		return err
+		return false, err
 	}
 
 	for _, srv := range cfg.Servers {
@@ -111,8 +113,8 @@ func (s *Store) SetContextServer(name string) error {
 				cfg.Context = &Context{}
 			}
 			cfg.Context.Server = name
-			return s.store(cfg)
+			return true, s.store(cfg)
 		}
 	}
-	return fmt.Errorf("server %q not found", name)
+	return false, nil
 }

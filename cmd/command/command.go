@@ -36,8 +36,9 @@ func NewCommand() *cobra.Command {
 	io := runtime.IOStreams{In: os.Stdin, Out: os.Stdout, Err: os.Stderr}
 
 	cmd := &cobra.Command{
-		Use:   info.CtlName,
-		Short: info.CtlDescriptionShort,
+		Use:          info.CtlName,
+		Short:        info.CtlDescriptionShort,
+		SilenceUsage: true,
 	}
 
 	cmd.SetIn(io.In)

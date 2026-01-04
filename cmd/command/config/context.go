@@ -60,7 +60,19 @@ func newContextSetServerCommand(c runtime.Context, _ runtime.IOStreams) *cobra.C
 		Short: "Set context server",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return c.Store().SetContextServer(args[0])
+			name := args[0]
+
+			ok, err := c.Store().SetContextServer(name)
+			if err != nil {
+				return err
+			}
+
+			if !ok {
+				err := fmt.Errorf("context server %q does not exist", name)
+				return err
+			}
+
+			return nil
 		},
 	}
 }
