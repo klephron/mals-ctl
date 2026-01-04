@@ -44,3 +44,15 @@ Commands:
 `scope`
 
 - `get`
+
+`config`
+
+- `server`
+  - `ls`
+  - `get [<name>]`
+  - `add <name> <url>`
+  - `remove <name>`
+
+- `context`
+  - `get`
+  - `set server <name>`
