@@ -2,6 +2,12 @@ package command
 
 import (
 	"mals-ctl/cmd/command/config"
+	"mals-ctl/cmd/command/listener"
+	"mals-ctl/cmd/command/log"
+	"mals-ctl/cmd/command/lsp"
+	"mals-ctl/cmd/command/model"
+	"mals-ctl/cmd/command/scope"
+	"mals-ctl/cmd/command/usage"
 	cfg "mals-ctl/cmd/config"
 	"mals-ctl/cmd/runtime"
 	"mals-ctl/pkg/info"
@@ -51,6 +57,12 @@ func NewCommand() *cobra.Command {
 	}
 
 	cmd.AddCommand(config.NewCommand(c, iostreams))
+	cmd.AddCommand(listener.NewCommand(c, iostreams))
+	cmd.AddCommand(log.NewCommand(c, iostreams))
+	cmd.AddCommand(lsp.NewCommand(c, iostreams))
+	cmd.AddCommand(model.NewCommand(c, iostreams))
+	cmd.AddCommand(scope.NewCommand(c, iostreams))
+	cmd.AddCommand(usage.NewCommand(c, iostreams))
 
 	return cmd
 }
