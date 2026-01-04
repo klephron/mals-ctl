@@ -43,7 +43,7 @@ Commands:
 
 `scope`
 
-- `get`
+- `tree`
 
 `config`
 
