@@ -8,41 +8,31 @@ import (
 	"mals-ctl/cmd/command/model"
 	"mals-ctl/cmd/command/scope"
 	"mals-ctl/cmd/command/usage"
-	cfg "mals-ctl/cmd/config"
 	"mals-ctl/cmd/runtime"
 	"mals-ctl/pkg/info"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 type Options struct {
-	ConfigFile string
-}
-
-type context struct {
-	runtime.Context
-	options *Options
-}
-
-func (s *context) Config() (*cfg.Config, error) {
-	viper.SetConfigFile(s.options.ConfigFile)
-
-	if err := viper.ReadInConfig(); err != nil {
-		return nil, err
-	}
-
-	var cfg cfg.Config
-	if err := viper.Unmarshal(&cfg); err != nil {
-		return nil, err
-	}
-
-	return &cfg, nil
+	ConfigPath    string
+	ContextServer string
 }
 
 func NewCommand() *cobra.Command {
-	o := Options{}
+	configDir := os.Getenv("XDG_CONFIG_HOME")
+	if configDir == "" {
+		home, _ := os.UserHomeDir()
+		configDir = filepath.Join(home, ".config")
+	}
+	configPath := filepath.Join(configDir, info.CtlName, "config.yaml")
+
+	o := Options{
+		ConfigPath: configPath,
+	}
+
 	iostreams := runtime.IOStreams{In: os.Stdin, Out: os.Stdout, Err: os.Stderr}
 
 	cmd := &cobra.Command{
@@ -50,11 +40,10 @@ func NewCommand() *cobra.Command {
 		Short: info.CtlDescriptionShort,
 	}
 
-	cmd.PersistentFlags().StringVarP(&o.ConfigFile, "config", "c", o.ConfigFile, "Path to the config file.")
+	cmd.PersistentFlags().StringVarP(&o.ConfigPath, "config", "c", o.ConfigPath, "Path to the config file")
+	cmd.PersistentFlags().StringVar(&o.ContextServer, "context-server", o.ContextServer, "Context server override")
 
-	c := &context{
-		options: &o,
-	}
+	c := newContext(&o)
 
 	cmd.AddCommand(config.NewCommand(c, iostreams))
 	cmd.AddCommand(listener.NewCommand(c, iostreams))

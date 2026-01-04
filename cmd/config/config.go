@@ -1,5 +1,10 @@
 package config
 
+const (
+	KeyServers = "servers"
+	KeyContext = "context"
+)
+
 type Config struct {
 	Servers []*Server `mapstructure:"servers"`
 	Context *Context  `mapstructure:"context"`
