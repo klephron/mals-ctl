@@ -11,3 +11,36 @@ go build -o build/mals-ctl cmd/*.go
 ```sh
 ./build/mals-ctl -h
 ```
+
+## TODO
+
+Commands:
+
+`log`
+
+- `ls` - list all
+- `get [<name>]` - print comprehensive info
+
+`listener`
+
+- `ls`
+- `get [<name>]`
+
+`lsp`
+
+- `ls`
+- `get [<name>]`
+
+`model`
+
+- `ls`
+- `get [<name>]`
+
+`usage`
+
+- `ls`
+- `get [<name>]`
+
+`scope`
+
+- `get`
