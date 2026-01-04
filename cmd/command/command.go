@@ -40,6 +40,10 @@ func NewCommand() *cobra.Command {
 		Short: info.CtlDescriptionShort,
 	}
 
+	cmd.SetIn(iostreams.In)
+	cmd.SetOut(iostreams.Out)
+	cmd.SetErr(iostreams.Err)
+
 	cmd.PersistentFlags().StringVarP(&o.ConfigPath, "config", "c", o.ConfigPath, "Path to the config file")
 	cmd.PersistentFlags().StringVar(&o.ContextServer, "context-server", o.ContextServer, "Context server override")
 
