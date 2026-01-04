@@ -27,35 +27,35 @@ func NewCommand() *cobra.Command {
 		home, _ := os.UserHomeDir()
 		configDir = filepath.Join(home, ".config")
 	}
-	configPath := filepath.Join(configDir, info.CtlName, "config.yaml")
+	configPath := filepath.Join(configDir, info.CtlName, "config.toml")
 
 	o := Options{
 		ConfigPath: configPath,
 	}
 
-	iostreams := runtime.IOStreams{In: os.Stdin, Out: os.Stdout, Err: os.Stderr}
+	io := runtime.IOStreams{In: os.Stdin, Out: os.Stdout, Err: os.Stderr}
 
 	cmd := &cobra.Command{
 		Use:   info.CtlName,
 		Short: info.CtlDescriptionShort,
 	}
 
-	cmd.SetIn(iostreams.In)
-	cmd.SetOut(iostreams.Out)
-	cmd.SetErr(iostreams.Err)
+	cmd.SetIn(io.In)
+	cmd.SetOut(io.Out)
+	cmd.SetErr(io.Err)
 
 	cmd.PersistentFlags().StringVarP(&o.ConfigPath, "config", "c", o.ConfigPath, "Path to the config file")
 	cmd.PersistentFlags().StringVar(&o.ContextServer, "context-server", o.ContextServer, "Context server override")
 
 	c := newContext(&o)
 
-	cmd.AddCommand(config.NewCommand(c, iostreams))
-	cmd.AddCommand(listener.NewCommand(c, iostreams))
-	cmd.AddCommand(log.NewCommand(c, iostreams))
-	cmd.AddCommand(lsp.NewCommand(c, iostreams))
-	cmd.AddCommand(model.NewCommand(c, iostreams))
-	cmd.AddCommand(scope.NewCommand(c, iostreams))
-	cmd.AddCommand(usage.NewCommand(c, iostreams))
+	cmd.AddCommand(config.NewCommand(c, io))
+	cmd.AddCommand(listener.NewCommand(c, io))
+	cmd.AddCommand(log.NewCommand(c, io))
+	cmd.AddCommand(lsp.NewCommand(c, io))
+	cmd.AddCommand(model.NewCommand(c, io))
+	cmd.AddCommand(scope.NewCommand(c, io))
+	cmd.AddCommand(usage.NewCommand(c, io))
 
 	return cmd
 }

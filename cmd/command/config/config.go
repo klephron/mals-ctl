@@ -6,11 +6,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func NewCommand(c runtime.Context, streams runtime.IOStreams) *cobra.Command {
-	command := &cobra.Command{
+func NewCommand(c runtime.Context, io runtime.IOStreams) *cobra.Command {
+	cmd := &cobra.Command{
 		Use:   "config",
 		Short: "Manage configuration",
 	}
 
-	return command
+	cmd.AddCommand(NewServerCommand(c, io))
+	cmd.AddCommand(NewContextCommand(c, io))
+
+	return cmd
 }
