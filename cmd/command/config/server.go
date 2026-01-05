@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"mals-ctl/cmd/config"
 	"mals-ctl/cmd/runtime"
+	"mals-ctl/internal/encoding/yaml"
 
 	"github.com/spf13/cobra"
-	"go.yaml.in/yaml/v3"
 )
 
 func NewServerCommand(c runtime.Context, io runtime.IOStreams) *cobra.Command {
@@ -43,7 +43,7 @@ func newServerLsCommand(c runtime.Context, io runtime.IOStreams) *cobra.Command 
 func newServerGetCommand(c runtime.Context, io runtime.IOStreams) *cobra.Command {
 	return &cobra.Command{
 		Use:   "get [name]",
-		Short: "Get server",
+		Short: "Get server(s) comprehensive info",
 		Args:  cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cfg, err := c.Config()

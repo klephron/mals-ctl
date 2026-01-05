@@ -3,9 +3,9 @@ package config
 import (
 	"fmt"
 	"mals-ctl/cmd/runtime"
+	"mals-ctl/internal/encoding/yaml"
 
 	"github.com/spf13/cobra"
-	"go.yaml.in/yaml/v3"
 )
 
 func NewContextCommand(c runtime.Context, io runtime.IOStreams) *cobra.Command {
