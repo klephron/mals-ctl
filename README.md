@@ -18,35 +18,6 @@ To sync API place updated `openapi-3.0.yaml`.
 
 Commands:
 
-`log`
-
-- `ls` - list all
-- `get [<name>]` - print comprehensive info
-
-`listener`
-
-- `ls`
-- `get [<name>]`
-
-`lsp`
-
-- `ls`
-- `get [<name>]`
-
-`model`
-
-- `ls`
-- `get [<name>]`
-
-`usage`
-
-- `ls`
-- `get [<name>]`
-
-`scope`
-
-- `tree`
-
 `config`
 
 - `server`
@@ -58,3 +29,32 @@ Commands:
 - `context`
   - `get`
   - `set server <name>`
+
+`listener`
+
+- `ls`
+- `get [<name>]`
+
+`log`
+
+- `ls` - list all
+- `get [<name>]` - print comprehensive info
+
+`lsp`
+
+- `ls`
+- `get [<name>]`
+
+`model`
+
+- `ls`
+- `get [<name>]`
+
+`scope`
+
+- `tree`
+
+`usage`
+
+- `ls`
+- `get [<name>]`

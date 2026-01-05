@@ -1,12 +1,12 @@
 package command
 
 import (
+	"fmt"
 	"mals-ctl/cmd/config"
-	"mals-ctl/cmd/runtime"
+	"mals-ctl/internal/api"
 )
 
 type context struct {
-	runtime.Context
 	options *Options
 	store   *config.Store
 }
@@ -16,6 +16,25 @@ func newContext(options *Options) *context {
 		options: options,
 		store:   config.NewStore(options.ConfigPath),
 	}
+}
+
+func (s *context) Client() (api.ClientWithResponsesInterface, error) {
+	cfg, err := s.Config()
+	if err != nil {
+		return nil, err
+	}
+
+	if cfg.Context == nil || cfg.Context.Server == "" {
+		return nil, fmt.Errorf("context server is not specified")
+	}
+
+	for _, server := range cfg.Servers {
+		if server.Name == cfg.Context.Server {
+			return api.NewClientWithResponses(server.Url)
+		}
+	}
+
+	return nil, fmt.Errorf("context server %q is not present", cfg.Context.Server)
 }
 
 func (s *context) Config() (*config.Config, error) {
