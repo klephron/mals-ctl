@@ -1,0 +1,1100 @@
+components:
+  schemas:
+    CodeLensOptions:
+      additionalProperties: false
+      properties:
+        resolveProvider:
+          type: boolean
+        workDoneProgress:
+          type: boolean
+      type: object
+    CompletionOptions:
+      additionalProperties: false
+      properties:
+        allCommitCharacters:
+          items:
+            type: string
+          nullable: true
+          type: array
+        completionItem:
+          $ref: "#/components/schemas/ServerCompletionItemOptions"
+        resolveProvider:
+          type: boolean
+        triggerCharacters:
+          items:
+            type: string
+          nullable: true
+          type: array
+        workDoneProgress:
+          type: boolean
+      type: object
+    Condition:
+      additionalProperties: false
+      properties:
+        Filetypes:
+          items:
+            type: string
+          nullable: true
+          type: array
+        Paths:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - Filetypes
+        - Paths
+      type: object
+    DocumentLinkOptions:
+      additionalProperties: false
+      properties:
+        resolveProvider:
+          type: boolean
+        workDoneProgress:
+          type: boolean
+      type: object
+    DocumentOnTypeFormattingOptions:
+      additionalProperties: false
+      properties:
+        firstTriggerCharacter:
+          type: string
+        moreTriggerCharacter:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - firstTriggerCharacter
+      type: object
+    ErrorDetail:
+      additionalProperties: false
+      properties:
+        location:
+          description: Where the error occurred, e.g. 'body.items[3].tags' or 'path.thing-id'
+          type: string
+        message:
+          description: Error message text
+          type: string
+        value:
+          description: The value at the given location
+      type: object
+    ErrorModel:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://example.com/schemas/ErrorModel.json
+          format: uri
+          readOnly: true
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          example: Property foo is required but is missing.
+          type: string
+        errors:
+          description: Optional list of individual error details
+          items:
+            $ref: "#/components/schemas/ErrorDetail"
+          nullable: true
+          type: array
+        instance:
+          description: A URI reference that identifies the specific occurrence of the problem.
+          example: https://example.com/error-log/abc123
+          format: uri
+          type: string
+        status:
+          description: HTTP status code
+          example: 400
+          format: int64
+          type: integer
+        title:
+          description: A short, human-readable summary of the problem type. This value should not change between occurrences of the error.
+          example: Bad Request
+          type: string
+        type:
+          default: about:blank
+          description: A URI reference to human-readable documentation for the error.
+          example: https://example.com/errors/example
+          format: uri
+          type: string
+      type: object
+    ExecuteCommandOptions:
+      additionalProperties: false
+      properties:
+        commands:
+          items:
+            type: string
+          nullable: true
+          type: array
+        workDoneProgress:
+          type: boolean
+      required:
+        - commands
+      type: object
+    FileOperationFilter:
+      additionalProperties: false
+      properties:
+        pattern:
+          $ref: "#/components/schemas/FileOperationPattern"
+        scheme:
+          type: string
+      required:
+        - pattern
+      type: object
+    FileOperationOptions:
+      additionalProperties: false
+      properties:
+        didCreate:
+          $ref: "#/components/schemas/FileOperationRegistrationOptions"
+        didDelete:
+          $ref: "#/components/schemas/FileOperationRegistrationOptions"
+        didRename:
+          $ref: "#/components/schemas/FileOperationRegistrationOptions"
+        willCreate:
+          $ref: "#/components/schemas/FileOperationRegistrationOptions"
+        willDelete:
+          $ref: "#/components/schemas/FileOperationRegistrationOptions"
+        willRename:
+          $ref: "#/components/schemas/FileOperationRegistrationOptions"
+      type: object
+    FileOperationPattern:
+      additionalProperties: false
+      properties:
+        glob:
+          type: string
+        matches:
+          type: string
+        options:
+          $ref: "#/components/schemas/FileOperationPatternOptions"
+      required:
+        - glob
+      type: object
+    FileOperationPatternOptions:
+      additionalProperties: false
+      properties:
+        ignoreCase:
+          type: boolean
+      type: object
+    FileOperationRegistrationOptions:
+      additionalProperties: false
+      properties:
+        filters:
+          items:
+            $ref: "#/components/schemas/FileOperationFilter"
+          nullable: true
+          type: array
+      required:
+        - filters
+      type: object
+    ListenerDto:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://example.com/schemas/ListenerDto.json
+          format: uri
+          readOnly: true
+          type: string
+        config:
+          $ref: "#/components/schemas/WireListener"
+        name:
+          type: string
+        status:
+          format: int32
+          type: integer
+        status_flags:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - name
+        - status
+        - status_flags
+        - config
+      type: object
+    LogDto:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://example.com/schemas/LogDto.json
+          format: uri
+          readOnly: true
+          type: string
+        config:
+          $ref: "#/components/schemas/WireLog"
+        name:
+          type: string
+        status:
+          format: int32
+          type: integer
+        status_flags:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - name
+        - status
+        - status_flags
+        - config
+      type: object
+    LspDto:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://example.com/schemas/LspDto.json
+          format: uri
+          readOnly: true
+          type: string
+        capabilities:
+          $ref: "#/components/schemas/ServerCapabilities"
+        config:
+          $ref: "#/components/schemas/WireLsp"
+        info:
+          $ref: "#/components/schemas/ServerInfo"
+        name:
+          type: string
+        status:
+          format: int32
+          type: integer
+        status_flags:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - name
+        - status
+        - status_flags
+        - config
+        - capabilities
+        - info
+      type: object
+    ModelDto:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://example.com/schemas/ModelDto.json
+          format: uri
+          readOnly: true
+          type: string
+        config:
+          $ref: "#/components/schemas/WireModel"
+        name:
+          type: string
+        status:
+          format: int32
+          type: integer
+        status_flags:
+          items:
+            type: string
+          nullable: true
+          type: array
+        tasks:
+          items:
+            $ref: "#/components/schemas/Task"
+          nullable: true
+          type: array
+      required:
+        - name
+        - status
+        - status_flags
+        - config
+        - tasks
+      type: object
+    Or_ServerCapabilities_callHierarchyProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_colorProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_declarationProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_definitionProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_diagnosticProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_documentFormattingProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_documentHighlightProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_documentRangeFormattingProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_documentSymbolProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_foldingRangeProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_hoverProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_implementationProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_inlineCompletionProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_inlineValueProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_linkedEditingRangeProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_monikerProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_notebookDocumentSync:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_referencesProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_selectionRangeProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_typeDefinitionProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_typeHierarchyProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_ServerCapabilities_workspaceSymbolProvider:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    Or_WorkspaceOptions_textDocumentContent:
+      additionalProperties: false
+      properties:
+        value: {}
+      required:
+        - value
+      type: object
+    ResourceLspDto:
+      additionalProperties: false
+      properties:
+        dependencies:
+          additionalProperties:
+            $ref: "#/components/schemas/ScopeTokenDto"
+          type: object
+        fullname:
+          type: string
+      required:
+        - fullname
+        - dependencies
+      type: object
+    ResourceModelDto:
+      additionalProperties: false
+      properties:
+        dependencies:
+          additionalProperties:
+            $ref: "#/components/schemas/ScopeTokenDto"
+          type: object
+        fullname:
+          type: string
+      required:
+        - fullname
+        - dependencies
+      type: object
+    ScopeTokenDto:
+      additionalProperties: false
+      properties:
+        from:
+          type: string
+      required:
+        - from
+      type: object
+    ServerCapabilities:
+      additionalProperties: false
+      properties:
+        callHierarchyProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_callHierarchyProvider"
+        codeActionProvider: {}
+        codeLensProvider:
+          $ref: "#/components/schemas/CodeLensOptions"
+        colorProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_colorProvider"
+        completionProvider:
+          $ref: "#/components/schemas/CompletionOptions"
+        declarationProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_declarationProvider"
+        definitionProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_definitionProvider"
+        diagnosticProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_diagnosticProvider"
+        documentFormattingProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_documentFormattingProvider"
+        documentHighlightProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_documentHighlightProvider"
+        documentLinkProvider:
+          $ref: "#/components/schemas/DocumentLinkOptions"
+        documentOnTypeFormattingProvider:
+          $ref: "#/components/schemas/DocumentOnTypeFormattingOptions"
+        documentRangeFormattingProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_documentRangeFormattingProvider"
+        documentSymbolProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_documentSymbolProvider"
+        executeCommandProvider:
+          $ref: "#/components/schemas/ExecuteCommandOptions"
+        experimental: {}
+        foldingRangeProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_foldingRangeProvider"
+        hoverProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_hoverProvider"
+        implementationProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_implementationProvider"
+        inlayHintProvider: {}
+        inlineCompletionProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_inlineCompletionProvider"
+        inlineValueProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_inlineValueProvider"
+        linkedEditingRangeProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_linkedEditingRangeProvider"
+        monikerProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_monikerProvider"
+        notebookDocumentSync:
+          $ref: "#/components/schemas/Or_ServerCapabilities_notebookDocumentSync"
+        positionEncoding:
+          type: string
+        referencesProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_referencesProvider"
+        renameProvider: {}
+        selectionRangeProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_selectionRangeProvider"
+        semanticTokensProvider: {}
+        signatureHelpProvider:
+          $ref: "#/components/schemas/SignatureHelpOptions"
+        textDocumentSync: {}
+        typeDefinitionProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_typeDefinitionProvider"
+        typeHierarchyProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_typeHierarchyProvider"
+        workspace:
+          $ref: "#/components/schemas/WorkspaceOptions"
+        workspaceSymbolProvider:
+          $ref: "#/components/schemas/Or_ServerCapabilities_workspaceSymbolProvider"
+      type: object
+    ServerCompletionItemOptions:
+      additionalProperties: false
+      properties:
+        labelDetailsSupport:
+          type: boolean
+      type: object
+    ServerInfo:
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+      required:
+        - name
+      type: object
+    SignatureHelpOptions:
+      additionalProperties: false
+      properties:
+        retriggerCharacters:
+          items:
+            type: string
+          nullable: true
+          type: array
+        triggerCharacters:
+          items:
+            type: string
+          nullable: true
+          type: array
+        workDoneProgress:
+          type: boolean
+      type: object
+    SpaceDto:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://example.com/schemas/SpaceDto.json
+          format: uri
+          readOnly: true
+          type: string
+        children:
+          additionalProperties:
+            $ref: "#/components/schemas/SpaceDto"
+          type: object
+        lsps:
+          additionalProperties:
+            $ref: "#/components/schemas/ResourceLspDto"
+          type: object
+        models:
+          additionalProperties:
+            $ref: "#/components/schemas/ResourceModelDto"
+          type: object
+        name:
+          type: string
+      required:
+        - name
+        - children
+        - lsps
+        - models
+      type: object
+    Step:
+      additionalProperties: false
+      properties:
+        Conditions:
+          items:
+            $ref: "#/components/schemas/Condition"
+          nullable: true
+          type: array
+        Kind: {}
+        Name:
+          type: string
+        Scope:
+          type: string
+      required:
+        - Name
+        - Conditions
+        - Kind
+        - Scope
+      type: object
+    Task:
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+        schema: {}
+        schema_description:
+          type: string
+        schema_name:
+          type: string
+        schema_strict:
+          type: boolean
+        text:
+          type: string
+      required:
+        - id
+        - text
+        - schema
+        - schema_name
+        - schema_description
+        - schema_strict
+      type: object
+    UsageDto:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://example.com/schemas/UsageDto.json
+          format: uri
+          readOnly: true
+          type: string
+        conditions:
+          items:
+            $ref: "#/components/schemas/Condition"
+          nullable: true
+          type: array
+        events:
+          items:
+            type: string
+          nullable: true
+          type: array
+        name:
+          type: string
+        workflow:
+          $ref: "#/components/schemas/Workflow"
+      required:
+        - name
+        - events
+        - conditions
+        - workflow
+      type: object
+    WireListener:
+      additionalProperties: false
+      properties:
+        ipc:
+          type: string
+        kind:
+          type: string
+        name:
+          type: string
+        port:
+          format: int64
+          nullable: true
+          type: integer
+        usages:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - name
+        - kind
+        - ipc
+        - port
+        - usages
+      type: object
+    WireLog:
+      additionalProperties: false
+      properties:
+        file:
+          nullable: true
+          type: string
+        kind:
+          type: string
+        level:
+          type: string
+        name:
+          type: string
+      required:
+        - name
+        - kind
+        - level
+        - file
+      type: object
+    WireLsp:
+      additionalProperties: false
+      properties:
+        kind:
+          type: string
+        name:
+          type: string
+        settings:
+          $ref: "#/components/schemas/WireLspSettings"
+      required:
+        - name
+        - kind
+        - settings
+      type: object
+    WireLspSettings:
+      additionalProperties: false
+      properties:
+        cmd:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - cmd
+      type: object
+    WireModel:
+      additionalProperties: false
+      properties:
+        kind:
+          type: string
+        name:
+          type: string
+        settings:
+          $ref: "#/components/schemas/WireModelSettings"
+      required:
+        - name
+        - kind
+        - settings
+      type: object
+    WireModelSettings:
+      additionalProperties: false
+      properties:
+        max_tokens:
+          format: int64
+          type: integer
+        temperature:
+          format: float
+          type: number
+        url:
+          type: string
+      required:
+        - url
+        - max_tokens
+        - temperature
+      type: object
+    Workflow:
+      additionalProperties: false
+      properties:
+        Steps:
+          items:
+            $ref: "#/components/schemas/Step"
+          nullable: true
+          type: array
+      required:
+        - Steps
+      type: object
+    WorkspaceFolders5Gn:
+      additionalProperties: false
+      properties:
+        changeNotifications:
+          type: string
+        supported:
+          type: boolean
+      type: object
+    WorkspaceOptions:
+      additionalProperties: false
+      properties:
+        fileOperations:
+          $ref: "#/components/schemas/FileOperationOptions"
+        textDocumentContent:
+          $ref: "#/components/schemas/Or_WorkspaceOptions_textDocumentContent"
+        workspaceFolders:
+          $ref: "#/components/schemas/WorkspaceFolders5Gn"
+      type: object
+info:
+  title: MALS API
+  version: 0.0.1
+openapi: 3.0.3
+paths:
+  /listeners:
+    get:
+      operationId: listener-get-all
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ListenerDto"
+                nullable: true
+                type: array
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get all listeners
+      tags:
+        - listener
+  /listeners/{name}:
+    get:
+      operationId: listener-get
+      parameters:
+        - description: Listener name
+          in: path
+          name: name
+          required: true
+          schema:
+            description: Listener name
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListenerDto"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get listener by name
+      tags:
+        - listener
+  /logs:
+    get:
+      operationId: log-get-all
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/LogDto"
+                nullable: true
+                type: array
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get all loggers
+      tags:
+        - log
+  /logs/{name}:
+    get:
+      operationId: log-get
+      parameters:
+        - description: Log name
+          in: path
+          name: name
+          required: true
+          schema:
+            description: Log name
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LogDto"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get logger by name
+      tags:
+        - log
+  /lsps:
+    get:
+      operationId: lsp-get-all
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/LspDto"
+                nullable: true
+                type: array
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get all LSPs
+      tags:
+        - lsp
+  /lsps/{name}:
+    get:
+      operationId: lsp-get
+      parameters:
+        - description: LSP name
+          in: path
+          name: name
+          required: true
+          schema:
+            description: LSP name
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LspDto"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get LSP by name
+      tags:
+        - lsp
+  /models:
+    get:
+      operationId: model-get-all
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ModelDto"
+                nullable: true
+                type: array
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get all models
+      tags:
+        - model
+  /models/{name}:
+    get:
+      operationId: model-get
+      parameters:
+        - description: model name
+          in: path
+          name: name
+          required: true
+          schema:
+            description: model name
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ModelDto"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get model by name
+      tags:
+        - model
+  /scopes:
+    get:
+      operationId: scope-tree-root
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SpaceDto"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get scope tree from root
+      tags:
+        - scope
+  /usages:
+    get:
+      operationId: usage-get-all
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UsageDto"
+                nullable: true
+                type: array
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get all usages
+      tags:
+        - usage
+  /usages/{name}:
+    get:
+      operationId: usage-get
+      parameters:
+        - description: usage name
+          in: path
+          name: name
+          required: true
+          schema:
+            description: usage name
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsageDto"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get usage by name
+      tags:
+        - usage
