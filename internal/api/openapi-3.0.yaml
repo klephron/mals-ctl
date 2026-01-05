@@ -31,19 +31,19 @@ components:
     Condition:
       additionalProperties: false
       properties:
-        Filetypes:
+        filetypes:
           items:
             type: string
           nullable: true
           type: array
-        Paths:
+        paths:
           items:
             type: string
           nullable: true
           type: array
       required:
-        - Filetypes
-        - Paths
+        - filetypes
+        - paths
       type: object
     DocumentLinkOptions:
       additionalProperties: false
@@ -186,6 +186,31 @@ components:
       required:
         - filters
       type: object
+    Listener:
+      additionalProperties: false
+      properties:
+        ipc:
+          type: string
+        kind:
+          type: string
+        name:
+          type: string
+        port:
+          format: int64
+          nullable: true
+          type: integer
+        usages:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - name
+        - kind
+        - ipc
+        - port
+        - usages
+      type: object
     ListenerDto:
       additionalProperties: false
       properties:
@@ -196,7 +221,7 @@ components:
           readOnly: true
           type: string
         config:
-          $ref: "#/components/schemas/WireListener"
+          $ref: "#/components/schemas/Listener"
         name:
           type: string
         status:
@@ -213,6 +238,24 @@ components:
         - status_flags
         - config
       type: object
+    Log:
+      additionalProperties: false
+      properties:
+        file:
+          nullable: true
+          type: string
+        kind:
+          type: string
+        level:
+          type: string
+        name:
+          type: string
+      required:
+        - name
+        - kind
+        - level
+        - file
+      type: object
     LogDto:
       additionalProperties: false
       properties:
@@ -223,7 +266,7 @@ components:
           readOnly: true
           type: string
         config:
-          $ref: "#/components/schemas/WireLog"
+          $ref: "#/components/schemas/Log"
         name:
           type: string
         status:
@@ -239,6 +282,20 @@ components:
         - status
         - status_flags
         - config
+      type: object
+    Lsp:
+      additionalProperties: false
+      properties:
+        kind:
+          type: string
+        name:
+          type: string
+        settings:
+          $ref: "#/components/schemas/LspSettings"
+      required:
+        - name
+        - kind
+        - settings
       type: object
     LspDto:
       additionalProperties: false
@@ -252,7 +309,7 @@ components:
         capabilities:
           $ref: "#/components/schemas/ServerCapabilities"
         config:
-          $ref: "#/components/schemas/WireLsp"
+          $ref: "#/components/schemas/Lsp"
         info:
           $ref: "#/components/schemas/ServerInfo"
         name:
@@ -273,6 +330,31 @@ components:
         - capabilities
         - info
       type: object
+    LspSettings:
+      additionalProperties: false
+      properties:
+        cmd:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - cmd
+      type: object
+    Model:
+      additionalProperties: false
+      properties:
+        kind:
+          type: string
+        name:
+          type: string
+        settings:
+          $ref: "#/components/schemas/ModelSettings"
+      required:
+        - name
+        - kind
+        - settings
+      type: object
     ModelDto:
       additionalProperties: false
       properties:
@@ -283,7 +365,7 @@ components:
           readOnly: true
           type: string
         config:
-          $ref: "#/components/schemas/WireModel"
+          $ref: "#/components/schemas/Model"
         name:
           type: string
         status:
@@ -305,6 +387,22 @@ components:
         - status_flags
         - config
         - tasks
+      type: object
+    ModelSettings:
+      additionalProperties: false
+      properties:
+        max_tokens:
+          format: int64
+          type: integer
+        temperature:
+          format: float
+          type: number
+        url:
+          type: string
+      required:
+        - url
+        - max_tokens
+        - temperature
       type: object
     Or_ServerCapabilities_callHierarchyProvider:
       additionalProperties: false
@@ -635,21 +733,27 @@ components:
     Step:
       additionalProperties: false
       properties:
-        Conditions:
+        conditions:
           items:
             $ref: "#/components/schemas/Condition"
           nullable: true
           type: array
-        Kind: {}
-        Name:
+        lsp:
+          nullable: true
           type: string
-        Scope:
+        model:
+          nullable: true
+          type: string
+        name:
+          type: string
+        scope:
           type: string
       required:
-        - Name
-        - Conditions
-        - Kind
-        - Scope
+        - name
+        - conditions
+        - model
+        - lsp
+        - scope
       type: object
     Task:
       additionalProperties: false
@@ -702,114 +806,16 @@ components:
         - conditions
         - workflow
       type: object
-    WireListener:
-      additionalProperties: false
-      properties:
-        ipc:
-          type: string
-        kind:
-          type: string
-        name:
-          type: string
-        port:
-          format: int64
-          nullable: true
-          type: integer
-        usages:
-          items:
-            type: string
-          nullable: true
-          type: array
-      required:
-        - name
-        - kind
-        - ipc
-        - port
-        - usages
-      type: object
-    WireLog:
-      additionalProperties: false
-      properties:
-        file:
-          nullable: true
-          type: string
-        kind:
-          type: string
-        level:
-          type: string
-        name:
-          type: string
-      required:
-        - name
-        - kind
-        - level
-        - file
-      type: object
-    WireLsp:
-      additionalProperties: false
-      properties:
-        kind:
-          type: string
-        name:
-          type: string
-        settings:
-          $ref: "#/components/schemas/WireLspSettings"
-      required:
-        - name
-        - kind
-        - settings
-      type: object
-    WireLspSettings:
-      additionalProperties: false
-      properties:
-        cmd:
-          items:
-            type: string
-          nullable: true
-          type: array
-      required:
-        - cmd
-      type: object
-    WireModel:
-      additionalProperties: false
-      properties:
-        kind:
-          type: string
-        name:
-          type: string
-        settings:
-          $ref: "#/components/schemas/WireModelSettings"
-      required:
-        - name
-        - kind
-        - settings
-      type: object
-    WireModelSettings:
-      additionalProperties: false
-      properties:
-        max_tokens:
-          format: int64
-          type: integer
-        temperature:
-          format: float
-          type: number
-        url:
-          type: string
-      required:
-        - url
-        - max_tokens
-        - temperature
-      type: object
     Workflow:
       additionalProperties: false
       properties:
-        Steps:
+        steps:
           items:
             $ref: "#/components/schemas/Step"
           nullable: true
           type: array
       required:
-        - Steps
+        - steps
       type: object
     WorkspaceFolders5Gn:
       additionalProperties: false

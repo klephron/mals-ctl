@@ -32,8 +32,8 @@ type CompletionOptions struct {
 
 // Condition defines model for Condition.
 type Condition struct {
-	Filetypes *[]string `json:"Filetypes"`
-	Paths     *[]string `json:"Paths"`
+	Filetypes *[]string `json:"filetypes"`
+	Paths     *[]string `json:"paths"`
 }
 
 // DocumentLinkOptions defines model for DocumentLinkOptions.
@@ -123,24 +123,48 @@ type FileOperationRegistrationOptions struct {
 	Filters *[]FileOperationFilter `json:"filters"`
 }
 
+// Listener defines model for Listener.
+type Listener struct {
+	Ipc    string    `json:"ipc"`
+	Kind   string    `json:"kind"`
+	Name   string    `json:"name"`
+	Port   *int64    `json:"port"`
+	Usages *[]string `json:"usages"`
+}
+
 // ListenerDto defines model for ListenerDto.
 type ListenerDto struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema      *string      `json:"$schema,omitempty"`
-	Config      WireListener `json:"config"`
-	Name        string       `json:"name"`
-	Status      int32        `json:"status"`
-	StatusFlags *[]string    `json:"status_flags"`
+	Schema      *string   `json:"$schema,omitempty"`
+	Config      Listener  `json:"config"`
+	Name        string    `json:"name"`
+	Status      int32     `json:"status"`
+	StatusFlags *[]string `json:"status_flags"`
+}
+
+// Log defines model for Log.
+type Log struct {
+	File  *string `json:"file"`
+	Kind  string  `json:"kind"`
+	Level string  `json:"level"`
+	Name  string  `json:"name"`
 }
 
 // LogDto defines model for LogDto.
 type LogDto struct {
 	// Schema A URL to the JSON Schema for this object.
 	Schema      *string   `json:"$schema,omitempty"`
-	Config      WireLog   `json:"config"`
+	Config      Log       `json:"config"`
 	Name        string    `json:"name"`
 	Status      int32     `json:"status"`
 	StatusFlags *[]string `json:"status_flags"`
+}
+
+// Lsp defines model for Lsp.
+type Lsp struct {
+	Kind     string      `json:"kind"`
+	Name     string      `json:"name"`
+	Settings LspSettings `json:"settings"`
 }
 
 // LspDto defines model for LspDto.
@@ -148,22 +172,41 @@ type LspDto struct {
 	// Schema A URL to the JSON Schema for this object.
 	Schema       *string            `json:"$schema,omitempty"`
 	Capabilities ServerCapabilities `json:"capabilities"`
-	Config       WireLsp            `json:"config"`
+	Config       Lsp                `json:"config"`
 	Info         ServerInfo         `json:"info"`
 	Name         string             `json:"name"`
 	Status       int32              `json:"status"`
 	StatusFlags  *[]string          `json:"status_flags"`
 }
 
+// LspSettings defines model for LspSettings.
+type LspSettings struct {
+	Cmd *[]string `json:"cmd"`
+}
+
+// Model defines model for Model.
+type Model struct {
+	Kind     string        `json:"kind"`
+	Name     string        `json:"name"`
+	Settings ModelSettings `json:"settings"`
+}
+
 // ModelDto defines model for ModelDto.
 type ModelDto struct {
 	// Schema A URL to the JSON Schema for this object.
 	Schema      *string   `json:"$schema,omitempty"`
-	Config      WireModel `json:"config"`
+	Config      Model     `json:"config"`
 	Name        string    `json:"name"`
 	Status      int32     `json:"status"`
 	StatusFlags *[]string `json:"status_flags"`
 	Tasks       *[]Task   `json:"tasks"`
+}
+
+// ModelSettings defines model for ModelSettings.
+type ModelSettings struct {
+	MaxTokens   int64   `json:"max_tokens"`
+	Temperature float32 `json:"temperature"`
+	Url         string  `json:"url"`
 }
 
 // OrServerCapabilitiesCallHierarchyProvider defines model for Or_ServerCapabilities_callHierarchyProvider.
@@ -368,10 +411,11 @@ type SpaceDto struct {
 
 // Step defines model for Step.
 type Step struct {
-	Conditions *[]Condition `json:"Conditions"`
-	Kind       interface{}  `json:"Kind"`
-	Name       string       `json:"Name"`
-	Scope      string       `json:"Scope"`
+	Conditions *[]Condition `json:"conditions"`
+	Lsp        *string      `json:"lsp"`
+	Model      *string      `json:"model"`
+	Name       string       `json:"name"`
+	Scope      string       `json:"scope"`
 }
 
 // Task defines model for Task.
@@ -394,52 +438,9 @@ type UsageDto struct {
 	Workflow   Workflow     `json:"workflow"`
 }
 
-// WireListener defines model for WireListener.
-type WireListener struct {
-	Ipc    string    `json:"ipc"`
-	Kind   string    `json:"kind"`
-	Name   string    `json:"name"`
-	Port   *int64    `json:"port"`
-	Usages *[]string `json:"usages"`
-}
-
-// WireLog defines model for WireLog.
-type WireLog struct {
-	File  *string `json:"file"`
-	Kind  string  `json:"kind"`
-	Level string  `json:"level"`
-	Name  string  `json:"name"`
-}
-
-// WireLsp defines model for WireLsp.
-type WireLsp struct {
-	Kind     string          `json:"kind"`
-	Name     string          `json:"name"`
-	Settings WireLspSettings `json:"settings"`
-}
-
-// WireLspSettings defines model for WireLspSettings.
-type WireLspSettings struct {
-	Cmd *[]string `json:"cmd"`
-}
-
-// WireModel defines model for WireModel.
-type WireModel struct {
-	Kind     string            `json:"kind"`
-	Name     string            `json:"name"`
-	Settings WireModelSettings `json:"settings"`
-}
-
-// WireModelSettings defines model for WireModelSettings.
-type WireModelSettings struct {
-	MaxTokens   int64   `json:"max_tokens"`
-	Temperature float32 `json:"temperature"`
-	Url         string  `json:"url"`
-}
-
 // Workflow defines model for Workflow.
 type Workflow struct {
-	Steps *[]Step `json:"Steps"`
+	Steps *[]Step `json:"steps"`
 }
 
 // WorkspaceFolders5Gn defines model for WorkspaceFolders5Gn.
