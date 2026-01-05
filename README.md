@@ -6,6 +6,8 @@
 go build -o build/mals-ctl cmd/*.go
 ```
 
+To sync API place updated `openapi-3.0.yaml`.
+
 ## Usage
 
 ```sh
