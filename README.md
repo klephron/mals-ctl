@@ -32,13 +32,13 @@ Commands:
 
 `listener`
 
-- `ls`
-- `get [<name>]`
+- `ls` - list all
+- `get [<name>]` - print comprehensive info
 
 `log`
 
-- `ls` - list all
-- `get [<name>]` - print comprehensive info
+- `ls`
+- `get [<name>]`
 
 `lsp`
 
