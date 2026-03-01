@@ -2,9 +2,9 @@ package config
 
 import (
 	"fmt"
-	"mals-ctl/cmd/config"
 	"mals-ctl/cmd/runtime"
 	"mals-ctl/internal/encoding/yaml"
+	"mals-ctl/pkg/config"
 
 	"github.com/spf13/cobra"
 )
@@ -28,7 +28,7 @@ func newServerLsCommand(c runtime.Context, io runtime.IOStreams) *cobra.Command 
 		Use:   "ls",
 		Short: "List servers",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfg, err := c.Config()
+			cfg, err := c.ConfigLoad()
 			if err != nil {
 				return err
 			}
@@ -46,7 +46,7 @@ func newServerGetCommand(c runtime.Context, io runtime.IOStreams) *cobra.Command
 		Short: "Get server(s) comprehensive info",
 		Args:  cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfg, err := c.Config()
+			cfg, err := c.ConfigLoad()
 			if err != nil {
 				return err
 			}
@@ -93,7 +93,7 @@ func newServerAddCommand(c runtime.Context, _ runtime.IOStreams) *cobra.Command 
 			name := args[0]
 			url := args[1]
 
-			server, err := c.Store().AddServer(name, url)
+			server, err := c.ConfigServerAdd(name, url)
 			if err != nil {
 				return err
 			}
@@ -114,7 +114,7 @@ func newServerRemoveCommand(c runtime.Context, _ runtime.IOStreams) *cobra.Comma
 		RunE: func(cmd *cobra.Command, args []string) error {
 			name := args[0]
 
-			server, err := c.Store().RemoveServer(args[0])
+			server, err := c.ConfigServerRemove(args[0])
 			if err != nil {
 				return err
 			}

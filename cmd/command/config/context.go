@@ -25,7 +25,7 @@ func newContextGetCommand(c runtime.Context, io runtime.IOStreams) *cobra.Comman
 		Use:   "get",
 		Short: "Get context",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			config, err := c.Config()
+			config, err := c.ConfigLoad()
 			if err != nil {
 				return err
 			}
@@ -62,7 +62,7 @@ func newContextSetServerCommand(c runtime.Context, _ runtime.IOStreams) *cobra.C
 		RunE: func(cmd *cobra.Command, args []string) error {
 			name := args[0]
 
-			ok, err := c.Store().SetContextServer(name)
+			ok, err := c.ConfigContextServerSet(name)
 			if err != nil {
 				return err
 			}
